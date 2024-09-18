@@ -28,7 +28,6 @@ class Player(pygame.sprite.Sprite):
         self.surf.set_colorkey((255, 255, 255), RLEACCEL)
         self.rect = self.surf.get_rect()
 
-    #THIS IS NOT WORKING - FIX
     #Move the player based on user keys
     def update(self, pressed_keys):
         if pressed_keys[K_UP]:
@@ -40,7 +39,7 @@ class Player(pygame.sprite.Sprite):
         if pressed_keys[K_RIGHT]:
             self.rect.move_ip(5, 0)
 
-          # Keep player on the screen
+        # Keep player on the screen
         if self.rect.left < 0:
             self.rect.left = 0
         elif self.rect.right > SCREEN_WIDTH:
@@ -93,12 +92,17 @@ screen = pygame.display.set_mode([SCREEN_WIDTH, SCREEN_HEIGHT])
 #Create a custom event for adding a new enemy
 ADDENEMY = pygame.USEREVENT + 1
 pygame.time.set_timer(ADDENEMY, 250)
+#Create a custom event for adding a new cloud
 ADDCLOUD = pygame.USEREVENT + 2
 pygame.time.set_timer(ADDCLOUD, 1000)
 
 #Instantiate player
 player = Player()
 
+#Create groups to hold enemy sprites, cloud sprites, and all sprites
+#enemies is used for collision detection and position updates
+#clouds is used for position updates
+#all_sprites is used for rendering
 enemies = pygame.sprite.Group()
 clouds = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
@@ -107,7 +111,7 @@ all_sprites.add(player)
 #Variable that keeps the main loop running
 running = True
 
-#Setup clock for slower game play
+#Setup clock for decent framerate (managable game play)
 clock = pygame.time.Clock()
 
 #Main loop
@@ -158,13 +162,6 @@ while running:
         #If collide, then remove the player and stop loop
         player.kill
         running = False
-    
-
-    #Put the center of the surace at the center of the screen display
-    #surf_center = (
-        #(SCREEN_WIDTH-surf.get_width())/2,
-        #(SCREEN_HEIGHT-surf.get_width())/2
-   # )
 
     #Draw the surface to the screen
     pygame.display.flip()
